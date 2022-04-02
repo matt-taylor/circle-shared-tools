@@ -44,6 +44,6 @@ steps:
       name: "Bundle << parameters.bundle-type >> dependencies"
       command: bundle << parameters.bundle-type >>
   - save_cache:
-      key: bundle-<< parameters.ruby-version >>-<< parameters.key-name >>-{{ checksum "Gemfile" }}-<< parameters.cache-breaker >>
+      key: bundle-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-<< parameters.ruby-version >>-<< parameters.additional-cache-tag >>-{{ checksum "Gemfile" }}-<< parameters.cache-breaker >>
       paths:
         - vendor/bundle
