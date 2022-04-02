@@ -39,7 +39,7 @@ workflows:
   test-pack:
     unless: << pipeline.parameters.run-integration-tests >>
     jobs:
-      - test_publish
+      - publishers_clearing_house
       - orb-tools/lint
 
       - shellcheck/check:
