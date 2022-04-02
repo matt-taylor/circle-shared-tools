@@ -1,7 +1,6 @@
 version: 2.1
 
 orbs:
-  tooling: cst/framework@<<pipeline.parameters.dev-orb-version>>
   orb-tools: circleci/orb-tools@10.0
   shellcheck: circleci/shellcheck@2.0
   cli: circleci/circleci-cli@0.1.9
@@ -40,7 +39,7 @@ workflows:
   test-pack:
     unless: << pipeline.parameters.run-integration-tests >>
     jobs:
-      - test_publish
+      - publishers_clearing_house
       - orb-tools/lint
 
       - shellcheck/check:
@@ -53,38 +52,8 @@ workflows:
           fail-if-semver-not-indicated: true
           publish-version-tag: false
           requires:
-            - test_publish
+            - publishers_clearing_house
           filters:
             branches:
               only:
-                - main
-
-
-  # This `integration-test_deploy` workflow will only run
-  # when the run-integration-tests pipeline parameter is set to true.
-  # It is meant to be triggered by the "trigger-integration-tests-workflow"
-  # job, and run tests on <your orb>@dev:${CIRCLE_SHA1:0:7}.
-  integration-test_deploy:
-    when: << pipeline.parameters.run-integration-tests >>
-    jobs:
-      # Run any integration tests defined within the `jobs` key.
-      - integration-test-1
-      # Publish a semver version of the orb. relies on
-      # the commit subject containing the text "[semver:patch|minor|major|skip]"
-      # as that will determine whether a patch, minor or major
-      # version will be published or if publishing should
-      # be skipped.
-      # e.g. [semver:patch] will cause a patch version to be published.
-      - orb-tools/dev-promote-prod-from-commit-subject:
-          orb-name: cst/framework
-          context: <publishing-context>
-          add-pr-comment: false
-          fail-if-semver-not-indicated: true
-          publish-version-tag: false
-          requires:
-            - integration-test-1
-          filters:
-            branches:
-              only:
-                - master
                 - main
