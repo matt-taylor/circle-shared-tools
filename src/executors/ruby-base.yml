@@ -1,0 +1,32 @@
+description: >
+  This is the base executor provided. Use this to spin up fucntionality
+  with basic infrstructure
+
+parameters:
+  ruby-version:
+    default: "2.7"
+    type: string
+  mysql-version:
+    default: "5"
+    type: string
+  redis-version:
+    default: "6"
+    type: string
+
+docker:
+  - image: circleci/ruby:<< parameters.ruby-version >>
+  - image: cimg/redis:<< parameters.redis-version >>
+  - image: cimg/mysql:<< parameters.mysql-version >>
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpw
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: passw0rd
+
+environment:
+  RAILS_ENV: test
+  REDIS_URL: "redis://127.0.0.1"
+  MYSQL_ROOT_PASSWORD: rootpw
+  MYSQL_DATABASE: test_db
+  MYSQL_USER: user
+  MYSQL_PASSWORD: passw0rd
