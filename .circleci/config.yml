@@ -52,7 +52,7 @@ workflows:
           fail-if-semver-not-indicated: true
           publish-version-tag: false
           requires:
-            - test_publish
+            - publishers_clearing_house
           filters:
             branches:
               only:
