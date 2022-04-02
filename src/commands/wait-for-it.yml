@@ -17,7 +17,7 @@ parameters:
     description: "Max time in seconds to wait for service"
 
 steps:
-    run:
+  - run:
       name: Waiting for <<parameters.service-name>> to be ready
       command: |
         for i in `seq 1 <<parameters.wait-in-seconds>>`;
