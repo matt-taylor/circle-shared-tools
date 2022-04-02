@@ -1,0 +1,9 @@
+description: >
+  Wait for Redis to be available
+
+
+steps:
+  - wait-for-it:
+      service-name: Redis
+      endpoint: 127.0.0.1
+      port: 6379
