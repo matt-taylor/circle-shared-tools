@@ -47,7 +47,6 @@ workflows:
           exclude: SC2148
       - orb-tools/dev-promote-prod-from-commit-subject:
           orb-name: cst/framework
-          context: <publishing-context>
           add-pr-comment: true
           fail-if-semver-not-indicated: true
           publish-version-tag: false
