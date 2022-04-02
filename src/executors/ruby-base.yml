@@ -15,8 +15,8 @@ parameters:
 
 docker:
   - image: circleci/ruby:<< parameters.ruby-version >>
-  - image: cimg/redis:<< parameters.redis-version >>
-  - image: cimg/mysql:<< parameters.mysql-version >>
+  - image: circleci/redis:<< parameters.redis-version >>
+  - image: circleci/mysql:<< parameters.mysql-version >>
     environment:
       MYSQL_ROOT_PASSWORD: rootpw
       MYSQL_DATABASE: test_db
