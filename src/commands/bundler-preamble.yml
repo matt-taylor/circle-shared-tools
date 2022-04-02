@@ -1,0 +1,49 @@
+description: >
+  Checkout project and install ruby dependenices.
+
+parameters:
+  ruby-version:
+    type: string
+    default: "3"
+    description: "Ruby Gem version"
+  additional-cache-tag:
+    type: string
+    default: ""
+    description: Additional consistent tag to add to the cache name
+  cache-breaker:
+    type: string
+    default: "0"
+    description: "Cache breaker to force new cache instantiation"
+  keep-lock-file:
+    type: boolean
+    default: false
+    description: "Retain lock file when bit is set to true. Otherwise generate a new one specific for this build"
+  bundle-type:
+    description: "Choose how you want your dependencies installed. Update all of them or just install all of them"
+    default: "update"
+    type: enum
+    enum: [ "update", "install" ]
+
+steps:
+  - checkout
+  - attach_workspace:
+      at: workspace
+  - unless:
+        condition:
+          equal: [ true, << parameters.keep-lock-file >> ]
+        steps:
+          - run:
+              name: Remove Gemfile.lock
+              command: rm Gemfile.lock
+  - restore_cache:
+      key: bundle-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-<< parameters.ruby-version >>-<< parameters.additional-cache-tag >>-{{ checksum "Gemfile" }}-<< parameters.cache-breaker >>
+  - ruby/install-deps:
+      path: vendor/bundle
+      with-cache: false
+  - run:
+      name: "Bundle << parameters.bundle-type >> dependencies"
+      command: bundle << parameters.bundle-type >>
+  - save_cache:
+      key: bundle-<< parameters.ruby-version >>-<< parameters.key-name >>-{{ checksum "Gemfile" }}-<< parameters.cache-breaker >>
+      paths:
+        - vendor/bundle
