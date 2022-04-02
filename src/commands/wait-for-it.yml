@@ -22,7 +22,7 @@ steps:
       command: |
         for i in `seq 1 <<parameters.wait-in-seconds>>`;
         do
-            n-z <<parameters.endpoint>> <<parameters.port>> && echo Success && exit 0
+          nc -z <<parameters.endpoint>> <<parameters.port>> && echo Success && exit 0
           echo -n .
           sleep 1
         done
