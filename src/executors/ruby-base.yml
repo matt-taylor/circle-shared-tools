@@ -30,3 +30,7 @@ environment:
   MYSQL_DATABASE: test_db
   MYSQL_USER: user
   MYSQL_PASSWORD: passw0rd
+  BUNDLE_JOBS: "3"
+  BUNDLE_RETRY: "3"
+  MYSQL_HOST: 127.0.0.1
+  MYSQL_PORT: 3306
