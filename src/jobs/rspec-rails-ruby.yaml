@@ -20,14 +20,17 @@ parameters:
   rails-version:
     type: string
     description: Rails version to test against
-  pre-rspec-steps:
-    type: steps
-    default: []
-    description: List of steps to run before running tests
   code-climate-report:
     type: boolean
     default: true
     description: Set to true when code climate should be reported
+  database-migration:
+    type: boolean
+    default: false
+    description: Set to true when the database needs to get migrated
+  database-migration-command:
+    type: string
+    default: "bundle exec rails db:schema:load --trace"
 
 executor:
   name: ruby-base
@@ -40,7 +43,12 @@ steps:
   - bundler-preamble:
       ruby-version: "<< parameters.ruby-version >>"
       additional-cache-tag: "<< parameters.rails-version >>"
-  - steps: << parameters.pre-rspec-steps >>
+  - when:
+      condition: << parameters.database-migration >>
+      steps:
+        - run:
+            name: Database Migration
+            command: << parameters.database-migration-command >>
   - rspec-test:
       code-climate-report: << parameters.code-climate-report >>
       rspec-args: << parameters.rspec-args >>
