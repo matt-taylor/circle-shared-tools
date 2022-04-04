@@ -42,6 +42,9 @@ parameters:
     type: string
     default: "bundle exec rails db:schema:load --trace"
 
+executor:
+  name: ruby-base
+
 steps:
   - rspec-rails-ruby:
     matrix:
