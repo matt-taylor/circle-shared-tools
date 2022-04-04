@@ -44,16 +44,16 @@ parameters:
 
 steps:
   - rspec-rails-ruby:
-    cc-report-collect-rails: << parameters.list-ruby-versions >>
-    cc-report-collect-ruby: << parameters.list-ruby-versions >>
-    database-migration-command: << parameters.database-migration-command >>
-    database-migration: << parameters.database-migration >>
-    rspec-args: << parameters.rspec-args >>
-    rspec-root: << parameters.rspec-root >>
-    rspec-system-args: << parameters.rspec-system-args >>
     matrix:
       parameters:
         ruby-version: << parameters.list-ruby-versions >>
         rails-version: << parameters.list-rails-versions >>
+        cc-report-collect-rails: << parameters.list-ruby-versions >>
+        cc-report-collect-ruby: << parameters.list-ruby-versions >>
+        database-migration-command: << parameters.database-migration-command >>
+        database-migration: << parameters.database-migration >>
+        rspec-args: << parameters.rspec-args >>
+        rspec-root: << parameters.rspec-root >>
+        rspec-system-args: << parameters.rspec-system-args >>
       alias: << parameters.matrix-alias >>
       name: test-ruby<< matrix.ruby-version >>-rails<< matrix.rails-version >>
