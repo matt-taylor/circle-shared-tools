@@ -20,7 +20,7 @@ parameters:
   rails-version:
     type: string
     description: Rails version to test against
-  pre-steps:
+  pre-rspec-steps:
     type: steps
     default: []
     description: List of steps to run before running tests
@@ -40,7 +40,7 @@ steps:
   - cst/bundler-preamble:
       ruby-version: "<< parameters.ruby-version >>"
       additional-cache-tag: "<< parameters.rails-version >>"
-  - steps: << parameters.pre-steps >>
+  - steps: << parameters.pre-rspec-steps >>
   - rspec-test:
       code-climate-report: << parameters.code-climate-report >>
       rspec-args: << parameters.rspec-args >>
