@@ -30,7 +30,7 @@ parameters:
     description: Set to true when code climate should be reported
 
 executor:
-  name: cst/ruby-base
+  name: ruby-base
   ruby-version: << parameters.ruby-version >>
 
 environment:
