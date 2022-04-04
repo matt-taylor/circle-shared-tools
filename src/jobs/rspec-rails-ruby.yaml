@@ -37,7 +37,7 @@ environment:
   BUNDLER_RAILS_VERSION: << parameters.rails-version >>
 
 steps:
-  - cst/bundler-preamble:
+  - bundler-preamble:
       ruby-version: "<< parameters.ruby-version >>"
       additional-cache-tag: "<< parameters.rails-version >>"
   - steps: << parameters.pre-rspec-steps >>
