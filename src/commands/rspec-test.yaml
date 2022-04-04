@@ -1,0 +1,41 @@
+description: >-
+  Validate correct queue naming for the ruby hawker module
+
+
+parameters:
+  rspec-root:
+    type: string
+    default: ""
+    description: "Root location for RSpec files"
+  code-climate-report:
+    type: boolean
+    default: false
+    description: Set to true when code climate should be reported
+  rspec-system-args:
+    type: string
+    default: ""
+    description: System arguments to pass through
+  rspec-args:
+    type: string
+    default: ""
+    description: RSpec arguments to pass through
+
+steps:
+  - when:
+      condition: << parameters.code-climate-report >>
+      steps:
+        - install-cc
+        - run:
+            name: Initialize Code climate Reporter
+            command: ./cc-test-reporter before-build
+  - run:
+      name: RSpec Test
+      command: |
+        << parameters.rspec-system-args >> bundle exec rspec << parameters.rspec-args >> << parameters.rspec-root >> --format RspecJunitFormatter --out test-results/rspec/rspec.xml --format progress --color
+  - when:
+      condition: << parameters.code-climate-report >>
+      steps:
+        - run:
+            name: Initialize Code climate Reporter
+            command: |
+              ./cc-test-reporter after-build format-coverage -t simplecov
