@@ -41,28 +41,16 @@ parameters:
   database-migration-command:
     type: string
     default: "bundle exec rails db:schema:load --trace"
-  rspec-root:
-    type: string
-    default: ""
-    description: "Root location for RSpec files"
-  rspec-system-args:
-    type: string
-    default: ""
-    description: System arguments to pass through
-  rspec-args:
-    type: string
-    default: ""
-    description: RSpec arguments to pass through
 
 steps:
   - rspec-rails-ruby:
-    cc-report-collect-ruby: << parameters.list-ruby-versions >>
     cc-report-collect-rails: << parameters.list-ruby-versions >>
-    database-migration: << parameters.database-migration >>
+    cc-report-collect-ruby: << parameters.list-ruby-versions >>
     database-migration-command: << parameters.database-migration-command >>
+    database-migration: << parameters.database-migration >>
+    rspec-args: << parameters.rspec-args >>
     rspec-root: << parameters.rspec-root >>
     rspec-system-args: << parameters.rspec-system-args >>
-    rspec-args: << parameters.rspec-args >>
     matrix:
       parameters:
         ruby-version: << parameters.list-ruby-versions >>
