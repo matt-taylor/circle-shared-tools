@@ -29,12 +29,12 @@ steps:
   - attach_workspace:
       at: workspace
   - unless:
-        condition:
-          equal: [ true, << parameters.keep-lock-file >> ]
-        steps:
-          - run:
-              name: Remove Gemfile.lock
-              command: rm Gemfile.lock
+      condition:
+        equal: [ true, << parameters.keep-lock-file >> ]
+      steps:
+        - run:
+            name: Remove Gemfile.lock
+            command: rm Gemfile.lock
   - restore_cache:
       key: bundle-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-<< parameters.ruby-version >>-<< parameters.additional-cache-tag >>-{{ checksum "Gemfile" }}-<< parameters.cache-breaker >>
   - ruby/install-deps:

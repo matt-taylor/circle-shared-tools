@@ -68,11 +68,11 @@ steps:
   - when:
       condition:
         or:
-          and:
+          - and:
             - equal: [ << parameters.rails-version >>, << parameters.cc-report-collect-rails >> ]
             - equal: [ << parameters.ruby-version >>, << parameters.cc-report-collect-ruby >> ]
             - equal: [ true, << parameters.code-climate-report >> ]
-          and:
+          - and:
             - equal: [ "", << parameters.cc-report-collect-rails >> ]
             - equal: [ "", << parameters.cc-report-collect-ruby >> ]
             - equal: [ true, << parameters.code-climate-report >> ]
