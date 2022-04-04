@@ -31,6 +31,14 @@ parameters:
   database-migration-command:
     type: string
     default: "bundle exec rails db:schema:load --trace"
+  cc-report-collect-ruby:
+    type: string
+    description: "Used for matrix testing. Do not explicitly set"
+    default: ""
+  cc-report-collect-rails:
+    type: string
+    description: "Used for matrix testing. Do not explicitly set"
+    default: ""
 
 executor:
   name: ruby-base
@@ -43,14 +51,34 @@ steps:
   - bundler-preamble:
       ruby-version: "<< parameters.ruby-version >>"
       additional-cache-tag: "<< parameters.rails-version >>"
+  - run:
+      environment:
+        EXPECTED_RAILS_VERSION: << parameters.rails-version >>
+      name: Validate Rails version
+      command: <<include(scripts/rails_version.sh)>>
+  - run:
+      name: Validate Ruby version
+      command: ruby -v
   - when:
       condition: << parameters.database-migration >>
       steps:
         - run:
             name: Database Migration
             command: << parameters.database-migration-command >>
-  - rspec-test:
-      code-climate-report: << parameters.code-climate-report >>
-      rspec-args: << parameters.rspec-args >>
-      rspec-root: << parameters.rspec-root >>
-      rspec-system-args: << parameters.rspec-system-args >>
+  - when:
+      condition:
+        or:
+          and:
+            - equal: [ << parameters.rails-version >>, << parameters.cc-report-collect-rails >> ]
+            - equal: [ << parameters.ruby-version >>, << parameters.cc-report-collect-ruby >> ]
+            - equal: [ true, << parameters.code-climate-report >> ]
+          and:
+            - equal: [ "", << parameters.cc-report-collect-rails >> ]
+            - equal: [ "", << parameters.cc-report-collect-ruby >> ]
+            - equal: [ true, << parameters.code-climate-report >> ]
+      steps:
+        - rspec-test:
+            code-climate-report: true
+            rspec-args: << parameters.rspec-args >>
+            rspec-root: << parameters.rspec-root >>
+            rspec-system-args: << parameters.rspec-system-args >>
