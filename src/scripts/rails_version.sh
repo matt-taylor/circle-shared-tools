@@ -1,5 +1,5 @@
 
-gemlock_rails=$(cat Gemfile.lock | grep "^  rails (")
+gemlock_rails=$(grep "^  rails (" Gemfile.lock)
 
 if [[ "$gemlock_rails" == *"$EXPECTED_RAILS_VERSION"* ]]; then
   echo "Gemfile.lock Rails version matches the expected rails version"
