@@ -82,7 +82,7 @@ steps:
             rspec-args: << parameters.rspec-args >>
             rspec-root: << parameters.rspec-root >>
             rspec-system-args: << parameters.rspec-system-args >>
-- unless:
+  - unless:
       condition:
         or:
           - and:
