@@ -56,7 +56,7 @@ steps:
           rspec-args: << parameters.rspec-args >>
           rspec-root: << parameters.rspec-root >>
           rspec-system-args: << parameters.rspec-system-args >>
-          ruby-version: << parameters.list-ruby-versions >>
           rails-version: << parameters.list-rails-versions >>
+          ruby-version: << parameters.list-ruby-versions >>
         alias: << parameters.matrix-alias >>
         name: test-ruby<< matrix.ruby-version >>-rails<< matrix.rails-version >>
