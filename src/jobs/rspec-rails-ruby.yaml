@@ -21,7 +21,7 @@ parameters:
     type: string
     description: Rails version to test against
   pre-steps:
-    type: step
+    type: steps
     default: []
     description: List of steps to run before running tests
   code-climate-report:
