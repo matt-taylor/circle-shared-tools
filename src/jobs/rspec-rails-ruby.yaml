@@ -1,0 +1,48 @@
+description: >-
+  RSpec testing for a version of rails and ruby
+
+parameters:
+  rspec-root:
+    type: string
+    default: ""
+    description: "Root location for RSpec files"
+  rspec-system-args:
+    type: string
+    default: ""
+    description: System arguments to pass through
+  rspec-args:
+    type: string
+    default: ""
+    description: RSpec arguments to pass through
+  ruby-version:
+    type: string
+    description: Ruby version to test against
+  rails-version:
+    type: string
+    description: Rails version to test against
+  pre-steps:
+    type: step
+    default: []
+    description: List of steps to run before running tests
+  code-climate-report:
+    type: boolean
+    default: true
+    description: Set to true when code climate should be reported
+
+executor:
+  name: cst/ruby-base
+  ruby-version: << parameters.ruby-version >>
+
+environment:
+  BUNDLER_RAILS_VERSION: << parameters.rails-version >>
+
+steps:
+  - cst/bundler-preamble:
+      ruby-version: "<< parameters.ruby-version >>"
+      additional-cache-tag: "<< parameters.rails-version >>"
+  - steps: << parameters.pre-steps >>
+  - rspec-test:
+      code-climate-report: << parameters.code-climate-report >>
+      rspec-args: << parameters.rspec-args >>
+      rspec-root: << parameters.rspec-root >>
+      rspec-system-args: << parameters.rspec-system-args >>

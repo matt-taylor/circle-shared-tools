@@ -1,6 +1,5 @@
 description: >-
-  Validate correct queue naming for the ruby hawker module
-
+  Run basic RSpec testing. Ability tos ent to code climate as well if configured
 
 parameters:
   rspec-root:
@@ -9,7 +8,7 @@ parameters:
     description: "Root location for RSpec files"
   code-climate-report:
     type: boolean
-    default: false
+    default: true
     description: Set to true when code climate should be reported
   rspec-system-args:
     type: string
