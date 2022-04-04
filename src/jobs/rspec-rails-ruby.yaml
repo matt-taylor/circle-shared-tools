@@ -82,3 +82,20 @@ steps:
             rspec-args: << parameters.rspec-args >>
             rspec-root: << parameters.rspec-root >>
             rspec-system-args: << parameters.rspec-system-args >>
+- unless:
+      condition:
+        or:
+          - and:
+            - equal: [ << parameters.rails-version >>, << parameters.cc-report-collect-rails >> ]
+            - equal: [ << parameters.ruby-version >>, << parameters.cc-report-collect-ruby >> ]
+            - equal: [ true, << parameters.code-climate-report >> ]
+          - and:
+            - equal: [ "", << parameters.cc-report-collect-rails >> ]
+            - equal: [ "", << parameters.cc-report-collect-ruby >> ]
+            - equal: [ true, << parameters.code-climate-report >> ]
+      steps:
+        - rspec-test:
+            code-climate-report: false
+            rspec-args: << parameters.rspec-args >>
+            rspec-root: << parameters.rspec-root >>
+            rspec-system-args: << parameters.rspec-system-args >>
