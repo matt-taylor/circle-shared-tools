@@ -10,7 +10,7 @@ parameters:
   parent-root:
     type: string
     description: "Parent root of workind directory"
-    default: $CIRCLE_WORKING_DIRECTORY
+    default: {{ .Environment.CIRCLE_WORKING_DIRECTORY }}
   filename-env:
     type: string
     description: "ENV variable to store the gem name in the $PATH"
