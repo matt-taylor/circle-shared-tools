@@ -28,7 +28,16 @@ steps:
       filename-env: "EXISTING_FILENAME"
   - run:
       name: "Checkout << parameters.default-branch >> branch"
-      command: git checkout << parameters.default-branch >>
+      command: git stash && git checkout << parameters.default-branch >>
   - build-gem:
       version-env: "MAIN_VERSION"
       filename-env: "MAIN_FILENAME"
+  - run:
+      name: Validate Version bump
+      command: |
+        if dpkg --compare-versions "$EXISTING_VERSION" gt "$MAIN_VERSION"; then
+          echo "Nice! Comparison is valid"
+        else
+          echo "Yikes! Comparison mismatch. $EXISTING_VERSION is not greater than $MAIN_VERSION"
+          exit 1
+        fi
