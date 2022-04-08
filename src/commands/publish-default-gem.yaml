@@ -1,0 +1,7 @@
+description: >-
+  Publish gem default location
+
+steps:
+  - run:
+      name: Push gem to default location
+      command: <<include(scripts/publish-default-gem.sh)>>

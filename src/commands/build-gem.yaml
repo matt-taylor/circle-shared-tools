@@ -1,7 +1,6 @@
 description: >
   Build a specific gem.
 
-
 parameters:
   gemspec-relative-path:
     type: string
@@ -17,8 +16,12 @@ parameters:
     default: "FILE"
   version-env:
     type: string
-    description: "ENV variable to store the versionof the gem in the $PATH"
+    description: "ENV variable to store the version of the gem in the $PATH"
     default: "VERSION"
+  gem-name-env:
+    type: string
+    description: "ENV variable to store the gem name in the $PATH"
+    default: "GEM_NAME"
 
 steps:
   - run:
@@ -36,8 +39,10 @@ steps:
       command: |
         gem_output=$(gem build $TEMP_GEMSPEC_NAME)
         VERSION=$(printf "$gem_output" | awk '/Version: / {print $2}')
-        FILE=$GEM_PATH$(printf "$gem_output" | awk '/File: / {print $2}')
+        FILE=$(printf "$gem_output" | awk '/File: / {print $2}')
+        NAME=$(printf "$gem_output" | awk '/Name: / {print $2}')
         echo "export << parameters.version-env >>=$VERSION" >> $BASH_ENV
         echo "export << parameters.filename-env >>=$FILE" >> $BASH_ENV
+        echo "export << parameters.gem-name-env >>=$NAME" >> $BASH_ENV
 
 
