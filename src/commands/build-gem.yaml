@@ -23,12 +23,11 @@ steps:
   - run:
       name: Validate Gemspec Existence
       command: |
-        gemspec_glob="<< parameters.parent-root >>/<< parameters.gemspec-relative-path >>/*.gemspec"
-        gemspec=$(ls $gemspec_glob)
+        gemspec=$(ls << parameters.parent-root >>/<< parameters.gemspec-relative-path >>/*.gemspec)
         if [[ $(ls -A) ]]; then
           echo "export TEMP_GEMSPEC_NAME=$gemspec" >> $BASH_ENV
         else
-          echo "Yikes! Unable to find a gemspec file in $gemspec_glob"
+          echo "Yikes! No spec found in << parameters.parent-root >>/<< parameters.gemspec-relative-path >>/*.gemspec"
           exit 1
         fi
   - run:
