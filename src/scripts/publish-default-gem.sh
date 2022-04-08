@@ -5,6 +5,6 @@ if [ -z "$GEM_HOST_API_KEY" ]; then
 fi
 
 # push to Ruby Gems
-gem push ${FILE}
+gem push "${FILE}"
 
 echo "Finished pushing to Gemfury"

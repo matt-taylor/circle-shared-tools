@@ -14,7 +14,7 @@ if [ -z "$GITHUB_EMAIL" ]; then
   exit 1
 fi
 
-if [ $(git tag -l "$VERSION") ]; then
+if [ "$(git tag -l "$VERSION")" ]; then
   echo "Pre existing version $VERSION, not tagging."
   exit 0
 fi
@@ -23,7 +23,7 @@ git config user.name "$GITHUB_USER"
 git config user.email "$GITHUB_EMAIL"
 
 # create tag in repo
-git tag -a $VERSION -m "$VERSION"
+git tag -a "$VERSION" -m "$VERSION"
 git push https://"${GITHUB_TOKEN}"@github.com/"${GITHUB_USER}"/"${GEM_NAME}".git "$VERSION"
 echo "Finished Tagging to git"
 
