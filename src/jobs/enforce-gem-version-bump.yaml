@@ -35,7 +35,7 @@ steps:
   - run:
       name: Validate Version bump
       command: |
-        if [[ "$CIRCLE_BRANCH" == "<< parameters.default-branch >>" ]] then
+        if [[ "$CIRCLE_BRANCH" == "<< parameters.default-branch >>" ]]; then
           echo "Current branch and default branch are the same. Skipping check"
           exit 0
         fi
