@@ -39,6 +39,10 @@ parameters:
     type: string
     description: "Used for matrix testing. Do not explicitly set"
     default: ""
+  pre-rspec-steps:
+    type: steps
+    description: "Steps that run before rspec"
+    default: []
 
 executor:
   name: ruby-base
@@ -59,6 +63,7 @@ steps:
   - run:
       name: Validate Ruby version
       command: ruby -v
+  - steps: << parameters.pre-rspec-steps >>
   - when:
       condition: << parameters.database-migration >>
       steps:

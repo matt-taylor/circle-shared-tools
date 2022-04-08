@@ -1,0 +1,33 @@
+description: >-
+  RSpec testing for a version of rails and ruby
+
+parameters:
+  default-branch:
+    type: string
+    description: Default protected branch to compare version to
+    default: "main"
+  ruby-version:
+    type: string
+    description: Ruby version to use for image against
+    default: "3.0"
+  gemspec-relative-path:
+    type: string
+    description: "The relative root to the gems gemspec"
+
+executor:
+  name: ruby-base
+  ruby-version: << parameters.ruby-version >>
+
+steps:
+  - checkout
+  - attach_workspace:
+      at: workspace
+  - build-gem:
+      version-env: "EXISTING_VERSION"
+      filename-env: "EXISTING_FILENAME"
+  - run:
+      name: "Checkout << parameters.default-branch >> branch"
+      command: git checkout << parameters.default-branch >>
+  - build-gem:
+      version-env: "MAIN_VERSION"
+      filename-env: "MAIN_FILENAME"

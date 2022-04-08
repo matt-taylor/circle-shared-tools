@@ -1,0 +1,43 @@
+description: >
+  Build a specific gem.
+
+
+parameters:
+  gemspec-relative-path:
+    type: string
+    description: "The relative root to the gems gemspec"
+    default: "."
+  parent-root:
+    type: string
+    description: "Parent root of workind directory"
+    default: $CIRCLE_WORKING_DIRECTORY
+  filename-env:
+    type: string
+    description: "ENV variable to store the gem name in the $PATH"
+    default: "FILE"
+  version-env:
+    type: string
+    description: "ENV variable to store the versionof the gem in the $PATH"
+    default: "VERSION"
+steps:
+  - run:
+      name: Validate Gemspec Existence
+      command: |
+        gemspec_glob="<< parameters.parent-root >>/<< parameters.gemspec-relative-path >>*.gemspec"
+        gemspec=$(ls $gemspec_glob)
+        if [[ $(ls -A) ]]; then
+          echo "export TEMP_GEMSPEC_NAME=$gemspec" >> $BASH_ENV
+        else
+          echo "Yikes! Unable to find a gemspec file in $gemspec_glob"
+          exit 1
+        fi
+  - run:
+      name: Build Gem
+      command: |
+        gem_output=$(gem build $TEMP_GEMSPEC_NAME)
+        VERSION=$(printf "$gem_output" | awk '/Version: / {print $2}')
+        FILE=$GEM_PATH$(printf "$gem_output" | awk '/File: / {print $2}')
+        echo "export << parameters.version-env >>=$VERSION" >> $BASH_ENV
+        echo "export << parameters.filename-env >>=$FILE" >> $BASH_ENV
+
+
