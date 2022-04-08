@@ -26,18 +26,22 @@ steps:
   - build-gem:
       version-env: "EXISTING_VERSION"
       filename-env: "EXISTING_FILENAME"
+      name: "Gem Metadata from current branch"
   - run:
       name: "Checkout << parameters.default-branch >> branch"
       command: git stash && git checkout << parameters.default-branch >>
   - build-gem:
       version-env: "MAIN_VERSION"
       filename-env: "MAIN_FILENAME"
+      name: "Gem Metadata from << parameters.default-branch >> branch"
   - run:
       name: Validate Version bump
       command: |
+        current_version_langauge="Current version [$EXISTING_VERSION]"
+        primary_version_langauge="<< parameters.default-branch >> version [$MAIN_VERSION]"
         if dpkg --compare-versions "$EXISTING_VERSION" gt "$MAIN_VERSION"; then
-          echo "Nice! Comparison is valid. $EXISTING_VERSION is greater than $MAIN_VERSION"
+          echo "Nice! Comparison is valid. $current_version_langauge is greater than $primary_version_langauge"
         else
-          echo "Yikes! Comparison mismatch. $EXISTING_VERSION is not greater than $MAIN_VERSION"
+          echo "Yikes! Comparison mismatch. $current_version_langauge is NOT greater than $primary_version_langauge"
           exit 1
         fi
