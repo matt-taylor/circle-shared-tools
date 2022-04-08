@@ -26,14 +26,12 @@ steps:
   - build-gem:
       version-env: "EXISTING_VERSION"
       filename-env: "EXISTING_FILENAME"
-      name: "Gem Metadata from current branch"
   - run:
       name: "Checkout << parameters.default-branch >> branch"
       command: git stash && git checkout << parameters.default-branch >>
   - build-gem:
       version-env: "MAIN_VERSION"
       filename-env: "MAIN_FILENAME"
-      name: "Gem Metadata from << parameters.default-branch >> branch"
   - run:
       name: Validate Version bump
       command: |

@@ -19,12 +19,7 @@ parameters:
     type: string
     description: "ENV variable to store the versionof the gem in the $PATH"
     default: "VERSION"
-  name:
-    type: string
-    description: "Name the command"
-    default: "Build Gem"
 
-name: << parameters.name >>
 steps:
   - run:
       name: Validate Gemspec Existence
