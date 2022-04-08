@@ -13,6 +13,7 @@ parameters:
   gemspec-relative-path:
     type: string
     description: "The relative root to the gems gemspec"
+    default: "."
 
 executor:
   name: ruby-base
