@@ -29,6 +29,6 @@ steps:
       steps:
         - publish-git
   - when:
-      condition: << publish-ruby-gems >>
+      condition: << parameters.publish-default-gem >>
       steps:
         - publish-default-gem
