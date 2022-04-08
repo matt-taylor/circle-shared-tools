@@ -23,7 +23,7 @@ steps:
   - run:
       name: Validate Gemspec Existence
       command: |
-        gemspec_glob="<< parameters.parent-root >>/<< parameters.gemspec-relative-path >>*.gemspec"
+        gemspec_glob="<< parameters.parent-root >>/<< parameters.gemspec-relative-path >>/*.gemspec"
         gemspec=$(ls $gemspec_glob)
         if [[ $(ls -A) ]]; then
           echo "export TEMP_GEMSPEC_NAME=$gemspec" >> $BASH_ENV
