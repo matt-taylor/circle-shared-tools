@@ -36,7 +36,7 @@ steps:
       name: Validate Version bump
       command: |
         if dpkg --compare-versions "$EXISTING_VERSION" gt "$MAIN_VERSION"; then
-          echo "Nice! Comparison is valid"
+          echo "Nice! Comparison is valid. $EXISTING_VERSION is greater than $MAIN_VERSION"
         else
           echo "Yikes! Comparison mismatch. $EXISTING_VERSION is not greater than $MAIN_VERSION"
           exit 1
