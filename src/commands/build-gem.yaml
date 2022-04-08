@@ -10,7 +10,7 @@ parameters:
   parent-root:
     type: string
     description: "Parent root of workind directory"
-    default: "{{ .Environment.CIRCLE_WORKING_DIRECTORY }}"
+    default: ${CIRCLE_WORKING_DIRECTORY}
   filename-env:
     type: string
     description: "ENV variable to store the gem name in the $PATH"
@@ -27,7 +27,7 @@ steps:
         if [[ $(ls -A) ]]; then
           echo "export TEMP_GEMSPEC_NAME=$gemspec" >> $BASH_ENV
         else
-          echo "Yikes! No spec found in << parameters.parent-root >>/<< parameters.gemspec-relative-path >>/*.gemspec"
+          echo "Yikes! No Gemspec found in << parameters.parent-root >>/<< parameters.gemspec-relative-path >>/*.gemspec"
           exit 1
         fi
   - run:
