@@ -35,6 +35,11 @@ steps:
   - run:
       name: Validate Version bump
       command: |
+        if [[ "$CIRCLE_BRANCH" == "<< parameters.default-branch >>" ]]; then
+          echo "Current branch and default branch are the same. Skipping check"
+          exit 0
+        fi
+
         current_version_langauge="Current version [$EXISTING_VERSION]"
         primary_version_langauge="<< parameters.default-branch >> version [$MAIN_VERSION]"
         if dpkg --compare-versions "$EXISTING_VERSION" gt "$MAIN_VERSION"; then
