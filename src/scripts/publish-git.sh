@@ -19,16 +19,16 @@ if [ $(git tag -l "$VERSION") ]; then
   exit 0
 fi
 
-git config user.name $GITHUB_USER
-git config user.email $GITHUB_EMAIL
+git config user.name "$GITHUB_USER"
+git config user.email "$GITHUB_EMAIL"
 
 # create tag in repo
 git tag -a $VERSION -m "$VERSION"
-git push https://${GITHUB_TOKEN}@github.com/${GITHUB_USER}/${GEM_NAME}.git $VERSION
+git push https://"${GITHUB_TOKEN}"@github.com/"${GITHUB_USER}"/"${GEM_NAME}".git "$VERSION"
 echo "Finished Tagging to git"
 
 RELEASE_BODY=$(git log -1 --pretty=format:%B "${CIRCLE_SHA1}")
 
-ghr -replace -t "${GITHUB_TOKEN}" -u "${GITHUB_USER}" -r "${GEM_NAME}" \
+./ghr -replace -t "${GITHUB_TOKEN}" -u "${GITHUB_USER}" -r "${GEM_NAME}" \
     -c "${CIRCLE_SHA1}" -n "${VERSION}" -b "${RELEASE_BODY}" "${VERSION}" "$FILE"
 echo "Finished Releasing to git"
