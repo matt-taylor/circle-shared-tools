@@ -1,0 +1,34 @@
+description: >
+  Publish a gem
+
+parameters:
+  ruby-version:
+    type: string
+    description: Ruby version to use for image against
+    default: "3.0"
+  publish-git:
+    type: boolean
+    description: Set true to publish to git. GITHUB_TOKEN GITHUB_USER are required variables
+    default: false
+  publish-default-gem:
+    type: boolean
+    description: Set true to publish to default gem location. Likely rubygems. GEM_HOST_API_KEY is a required variable
+    default: false
+
+executor:
+  name: ruby-base
+  ruby-version: << parameters.ruby-version >>
+
+steps:
+  - checkout
+  - attach_workspace:
+      at: workspace
+  - build-gem
+  - when:
+      condition: << parameters.publish-git >>
+      steps:
+        - publish-git
+  - when:
+      condition: << parameters.publish-default-gem >>
+      steps:
+        - publish-default-gem

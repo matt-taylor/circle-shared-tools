@@ -1,0 +1,19 @@
+description: >-
+  Publish Git and create tag
+
+steps:
+  - run:
+      name: Get Go
+      command: |
+        sudo apt-get update -qq
+        sudo apt-get -y --no-install-recommends install golang-go
+  - run:
+      name: 'Download GHR'
+      command: |
+        curl -sSL https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_amd64.tar.gz | tar xz -f - -C . ghr_v0.13.0_linux_amd64/ghr
+        mv ghr_v0.13.0_linux_amd64/ghr .
+        rm -rf ghr_v0.13.0_linux_amd64
+        chmod 0755 ghr
+  - run:
+      name: Push gem to default location
+      command: <<include(scripts/publish-git.sh)>>
