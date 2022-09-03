@@ -23,11 +23,11 @@ parameters:
   mysql-version:
     type: string
     description: MySQL Version to test with
-    default: "latest"
+    default: "8.0.28"
   redis-version:
     type: string
     description: Redis Version to test with
-    default: "latest"
+    default: "6.2"
   code-climate-report:
     type: boolean
     default: true
