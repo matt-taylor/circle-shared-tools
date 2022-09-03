@@ -17,6 +17,14 @@ parameters:
   ruby-version:
     type: string
     description: Ruby version to test against
+  mysql-version:
+    type: string
+    description: MySQL Version to test with
+    default: "latest"
+  redis-version:
+    type: string
+    description: Redis Version to test with
+    default: "latest"
   code-climate-report:
     type: boolean
     default: true
@@ -40,6 +48,8 @@ parameters:
 executor:
   name: ruby-base
   ruby-version: << parameters.ruby-version >>
+  mysql-version: << parameters.mysql-version >>
+  redis-version: << parameters.redis-version >>
 
 steps:
   - bundler-preamble:
