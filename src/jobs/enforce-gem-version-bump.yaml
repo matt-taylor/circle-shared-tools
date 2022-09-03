@@ -24,12 +24,14 @@ steps:
   - attach_workspace:
       at: workspace
   - build-gem:
+      name: Version Metadata for branch
       version-env: "EXISTING_VERSION"
       filename-env: "EXISTING_FILENAME"
   - run:
       name: "Checkout << parameters.default-branch >> branch"
       command: git stash && git checkout << parameters.default-branch >>
   - build-gem:
+      name: Version Metadata for Main
       version-env: "MAIN_VERSION"
       filename-env: "MAIN_FILENAME"
   - run:

@@ -7,10 +7,10 @@ parameters:
     default: "2.7"
     type: string
   mysql-version:
-    default: "5.7"
+    default: "latest"
     type: string
   redis-version:
-    default: "6.2"
+    default: "latest"
     type: string
 
 docker:
