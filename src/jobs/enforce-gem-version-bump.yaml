@@ -24,31 +24,8 @@ executor:
   ruby-version: << parameters.ruby-version >>
 
 steps:
-  - checkout
-  - attach_workspace:
-      at: workspace
-  - build-gem:
-      version-env: "EXISTING_VERSION"
-      filename-env: "EXISTING_FILENAME"
-  - run:
-      name: "Checkout << parameters.default-target >> target"
-      command: git stash && git checkout << parameters.default-target >>
-  - build-gem:
-      version-env: "TARGET_VERSION"
-      filename-env: "TARGET_FILENAME"
-  - run:
-      name: Validate Version bump
-      command: |
-        if [[ "$CIRCLE_BRANCH" == "<< parameters.default-target >>" ]]; then
-          echo "Current branch and default target are the same. Skipping check"
-          exit 0
-        fi
+  - enforce-gem-version-bump:
+      default-target: << parameters.default-target >>
+      exit-strategy: << parameters.exit-strategy >>
+      gemspec-relative-path: << parameters.gemspec-relative-path >>
 
-        current_version_langauge="Current version [$EXISTING_VERSION]"
-        primary_version_langauge="<< parameters.default-target >> version [$TARGET_VERSION]"
-        if dpkg --compare-versions "$EXISTING_VERSION" gt "$MAIN_VERSION"; then
-          echo "Nice! Comparison is valid. $current_version_langauge is greater than $primary_version_langauge"
-        else
-          echo "Yikes! Comparison mismatch. $current_version_langauge is NOT greater than $primary_version_langauge"
-          << parameters.exit-strategy >>
-        fi
