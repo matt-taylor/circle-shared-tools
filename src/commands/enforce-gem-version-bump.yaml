@@ -38,7 +38,7 @@ steps:
 
         current_version_langauge="Current version [$EXISTING_VERSION]"
         primary_version_langauge="<< parameters.default-target >> version [$TARGET_VERSION]"
-        if dpkg --compare-versions "$EXISTING_VERSION" gt "$MAIN_VERSION"; then
+        if dpkg --compare-versions "$EXISTING_VERSION" gt "$TARGET_VERSION"; then
           echo "Nice! Comparison is valid. $current_version_langauge is greater than $primary_version_langauge"
         else
           echo "Yikes! Comparison mismatch. $current_version_langauge is NOT greater than $primary_version_langauge"
