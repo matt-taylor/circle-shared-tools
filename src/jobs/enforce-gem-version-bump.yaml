@@ -2,10 +2,14 @@ description: >-
   RSpec testing for a version of rails and ruby
 
 parameters:
-  default-branch:
+  default-target:
     type: string
-    description: Default protected branch to compare version to
+    description: "Provide a branch name or a target (ie: main, HEAD~1)"
     default: "main"
+  exit-strategy:
+    type: string
+    description: String to be exeucted in line when comparison fails
+    default: exit 1
   ruby-version:
     type: string
     description: Ruby version to use for image against
@@ -30,21 +34,21 @@ steps:
       name: "Checkout << parameters.default-branch >> branch"
       command: git stash && git checkout << parameters.default-branch >>
   - build-gem:
-      version-env: "MAIN_VERSION"
-      filename-env: "MAIN_FILENAME"
+      version-env: "TARGET_VERSION"
+      filename-env: "TARGET_FILENAME"
   - run:
       name: Validate Version bump
       command: |
-        if [[ "$CIRCLE_BRANCH" == "<< parameters.default-branch >>" ]]; then
-          echo "Current branch and default branch are the same. Skipping check"
+        if [[ "$CIRCLE_BRANCH" == "<< parameters.default-target >>" ]]; then
+          echo "Current branch and default target are the same. Skipping check"
           exit 0
         fi
 
         current_version_langauge="Current version [$EXISTING_VERSION]"
-        primary_version_langauge="<< parameters.default-branch >> version [$MAIN_VERSION]"
+        primary_version_langauge="<< parameters.default-target >> version [$TARGET_VERSION]"
         if dpkg --compare-versions "$EXISTING_VERSION" gt "$MAIN_VERSION"; then
           echo "Nice! Comparison is valid. $current_version_langauge is greater than $primary_version_langauge"
         else
           echo "Yikes! Comparison mismatch. $current_version_langauge is NOT greater than $primary_version_langauge"
-          exit 1
+          << parameters.exit-strategy >>
         fi
