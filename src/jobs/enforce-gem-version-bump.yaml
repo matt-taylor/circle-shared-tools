@@ -31,8 +31,8 @@ steps:
       version-env: "EXISTING_VERSION"
       filename-env: "EXISTING_FILENAME"
   - run:
-      name: "Checkout << parameters.default-branch >> branch"
-      command: git stash && git checkout << parameters.default-branch >>
+      name: "Checkout << parameters.default-target >> target"
+      command: git stash && git checkout << parameters.default-target >>
   - build-gem:
       version-env: "TARGET_VERSION"
       filename-env: "TARGET_FILENAME"
