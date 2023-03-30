@@ -1,0 +1,46 @@
+description: >-
+  Validate a the gem version has been bumped.
+
+parameters:
+  default-target:
+    type: string
+    description: "Provide a branch name or a target (ie: main, HEAD~1)"
+    default: "main"
+  exit-strategy:
+    type: string
+    description: String to be exeucted in line when comparison fails
+    default: exit 1
+  gemspec-relative-path:
+    type: string
+    description: "The relative root to the gems gemspec"
+    default: "."
+
+steps:
+  - checkout
+  - attach_workspace:
+      at: workspace
+  - build-gem:
+      version-env: "EXISTING_VERSION"
+      filename-env: "EXISTING_FILENAME"
+  - run:
+      name: "Checkout << parameters.default-target >> target"
+      command: git stash && git checkout << parameters.default-target >>
+  - build-gem:
+      version-env: "TARGET_VERSION"
+      filename-env: "TARGET_FILENAME"
+  - run:
+      name: Validate Version bump
+      command: |
+        if [[ "$CIRCLE_BRANCH" == "<< parameters.default-target >>" ]]; then
+          echo "Current branch and default target are the same. Skipping check"
+          exit 0
+        fi
+
+        current_version_langauge="Current version [$EXISTING_VERSION]"
+        primary_version_langauge="<< parameters.default-target >> version [$TARGET_VERSION]"
+        if dpkg --compare-versions "$EXISTING_VERSION" gt "$TARGET_VERSION"; then
+          echo "Nice! Comparison is valid. $current_version_langauge is greater than $primary_version_langauge"
+        else
+          echo "Yikes! Comparison mismatch. $current_version_langauge is NOT greater than $primary_version_langauge"
+          << parameters.exit-strategy >>
+        fi
