@@ -58,7 +58,6 @@ executor:
   mysql-version: << parameters.mysql-version >>
   redis-version: << parameters.redis-version >>
 
-
 environment:
   BUNDLER_RAILS_VERSION: << parameters.rails-version >>
 
@@ -70,7 +69,7 @@ steps:
       environment:
         EXPECTED_RAILS_VERSION: << parameters.rails-version >>
       name: Validate Rails version
-      command: <<include(scripts/rails_version.sh)>>
+      command: <<include(scripts/rails_version.rb)>>
   - run:
       name: Validate Ruby version
       command: ruby -v
