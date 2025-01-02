@@ -1,8 +1,10 @@
 
 CURRENT_RAILS_VERSION=$(bundle exec gem list rails | grep -i "^rails (" | tr -cd "0-9.")
-COMMAND="require \"bundler\";"\
-"dependency = Gem::Dependency.new(\"rails\", Gem::Requirement.new([$EXPECTED_RAILS_VERSION]), :runtime);"\
-"puts dependency.match?(\"rails\", $CURRENT_RAILS_VERSION]) ==  nil"
+COMMAND='require "bundler";'\
+'dependency = Gem::Dependency.new("rails", Gem::Requirement.new(["$EXPECTED_RAILS_VERSION"]), :runtime);'\
+'puts dependency.match?("rails", "$CURRENT_RAILS_VERSION"]) ==  nil'
+
+echo $COMMAND
 
 dependency_result=$(ruby -e "$COMMAND")
 
