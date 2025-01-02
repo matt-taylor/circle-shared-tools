@@ -69,8 +69,7 @@ steps:
       environment:
         EXPECTED_RAILS_VERSION: << parameters.rails-version >>
       name: Validate Rails version
-      shell: /usr/bin/env ruby
-      command: <<include(scripts/rails_version.rb)>>
+      command: <<include(scripts/rails_version.sh)>>
   - run:
       name: Validate Ruby version
       command: ruby -v
