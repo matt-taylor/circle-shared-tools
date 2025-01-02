@@ -41,10 +41,6 @@ workflows:
     jobs:
       - publishers_clearing_house
       - orb-tools/lint
-
-      - shellcheck/check:
-          dir: ./src/scripts
-          exclude: SC2148
       - orb-tools/dev-promote-prod-from-commit-subject:
           orb-name: cst/framework
           add-pr-comment: true

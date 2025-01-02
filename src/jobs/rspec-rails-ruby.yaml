@@ -58,7 +58,6 @@ executor:
   mysql-version: << parameters.mysql-version >>
   redis-version: << parameters.redis-version >>
 
-
 environment:
   BUNDLER_RAILS_VERSION: << parameters.rails-version >>
 
